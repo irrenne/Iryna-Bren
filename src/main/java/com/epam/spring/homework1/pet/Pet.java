@@ -11,8 +11,6 @@ public class Pet {
     private List<Animal> pets;
 
     public void printPets() {
-        for (Animal animal : pets) {
-            System.out.println(animal.getAnimal());
-        }
+        pets.forEach(System.out::println);
     }
 }

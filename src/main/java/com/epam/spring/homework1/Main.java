@@ -9,10 +9,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class Main {
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(BeansConfig.class);
-        context.getBean(Pet.class).printPets();
 
+        context.getBean(Pet.class).printPets();
         System.out.println(context.getBean("cheetah", Cheetah.class));
         System.out.println(context.getBean(Cheetah.class));
-
     }
 }
