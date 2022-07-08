@@ -16,4 +16,5 @@ public interface UserMapper {
     UserDto mapUserToUserDto(User user);
 
     User mapUserDtoToUser(UserDto userDto);
+
 }
