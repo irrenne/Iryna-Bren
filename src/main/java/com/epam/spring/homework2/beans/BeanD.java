@@ -1,32 +1,35 @@
 package com.epam.spring.homework2.beans;
 
 import com.epam.spring.homework2.validation.MyValidator;
-import org.springframework.beans.factory.annotation.Value;
 
 public class BeanD implements MyValidator {
-    @Value("${beanD.name}")
-    private String name;
-    @Value("${beanD.value}")
-    private int value;
+    private final String name;
+    private final int value;
+
+    public BeanD(String name, int value) {
+        this.name = name;
+        this.value = value;
+    }
 
     @Override
     public String toString() {
-        return  name + ' ' + value;
+        return name + ' ' + value;
     }
 
-    private void customInitMethod(){
+    private void customInitMethod() {
         System.out.println("custom init beanD method");
     }
-    private void customDestroyMethod(){
+
+    private void customDestroyMethod() {
         System.out.println("custom destroy beanD method");
     }
 
     @Override
     public void validate() {
         if (name != null && value > 0) {
-            System.out.println("bean "+this.getClass()+" is valid");
+            System.out.println("bean " + this.getClass() + " is valid");
         } else {
-            System.out.println("bean "+this.getClass()+" is NOT valid");
+            System.out.println("bean " + this.getClass() + " is NOT valid");
         }
     }
 }

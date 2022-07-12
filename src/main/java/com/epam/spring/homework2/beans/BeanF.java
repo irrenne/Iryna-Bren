@@ -14,9 +14,9 @@ public class BeanF implements MyValidator {
     @Override
     public void validate() {
         if (name != null && value > 0) {
-            System.out.println("bean "+this.getClass()+" is valid");
+            System.out.println("bean " + this.getClass() + " is valid");
         } else {
-            System.out.println("bean "+this.getClass()+" is NOT valid");
+            System.out.println("bean " + this.getClass() + " is NOT valid");
         }
     }
 }

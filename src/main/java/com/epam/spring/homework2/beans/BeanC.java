@@ -1,13 +1,15 @@
 package com.epam.spring.homework2.beans;
 
 import com.epam.spring.homework2.validation.MyValidator;
-import org.springframework.beans.factory.annotation.Value;
 
 public class BeanC implements MyValidator {
-    @Value("${beanC.name}")
-    private String name;
-    @Value("${beanC.value}")
-    private int value;
+    private final String name;
+    private final int value;
+
+    public BeanC(String name, int value) {
+        this.name = name;
+        this.value = value;
+    }
 
     @Override
     public String toString() {
@@ -25,9 +27,9 @@ public class BeanC implements MyValidator {
     @Override
     public void validate() {
         if (name != null && value > 0) {
-            System.out.println("bean "+this.getClass()+" is valid");
+            System.out.println("bean " + this.getClass() + " is valid");
         } else {
-            System.out.println("bean "+this.getClass()+" is NOT valid");
+            System.out.println("bean " + this.getClass() + " is NOT valid");
         }
     }
 }
