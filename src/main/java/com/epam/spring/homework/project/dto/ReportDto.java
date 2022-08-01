@@ -1,28 +1,25 @@
 package com.epam.spring.homework.project.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.epam.spring.homework.project.model.Status;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
-
 @Data
 public class ReportDto {
-    @JsonProperty(access = READ_ONLY)
     private long id;
 
     @NotBlank(message = "type is mandatory")
     @NotNull
     private String type;
 
+    @NotNull
     private Date dateOfCreation;
 
     @NotNull
-    private String status;
-
+    private Status status;
     private String comment;
 
     @NotBlank(message = "fileName is mandatory")
@@ -30,7 +27,6 @@ public class ReportDto {
     private String fileName;
 
     @NotNull
-    private long userId;
-
-    private long inspectorId;
+    private UserDto user;
+    private UserDto inspector;
 }

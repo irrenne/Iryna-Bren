@@ -1,18 +1,15 @@
 package com.epam.spring.homework.project.dto;
 
+import com.epam.spring.homework.project.model.Role;
 import com.epam.spring.homework.project.validation.ValidPassword;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
-
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
-    @JsonProperty(access = READ_ONLY)
     private Long id;
 
     @NotBlank(message = "name is mandatory")
@@ -27,4 +24,5 @@ public class UserDto {
     @ValidPassword
     @NotBlank(message = "password is mandatory")
     private String password;
+    private Role role;
 }

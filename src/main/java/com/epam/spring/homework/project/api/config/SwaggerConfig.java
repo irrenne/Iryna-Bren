@@ -1,4 +1,4 @@
-package com.epam.spring.homework.project;
+package com.epam.spring.homework.project.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

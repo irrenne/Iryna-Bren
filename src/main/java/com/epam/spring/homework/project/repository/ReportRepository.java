@@ -1,19 +1,16 @@
 package com.epam.spring.homework.project.repository;
 
 import com.epam.spring.homework.project.model.Report;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface ReportRepository {
-    Report getReport(Long id);
+@Repository
+public interface ReportRepository extends JpaRepository<Report, Long> {
 
-    Report createReport(Report report);
-
-    Report updateReport(Long id, Report report);
-
-    void deleteReport(Long id);
-
-    List<Report> getReportsForUser(Long userId);
-
-    List<Report> getReports();
+    @Query("SELECT r FROM Report r WHERE r.user.id = ?1")
+    List<Report> getReportsForUser(Long userId, Pageable pageable);
 }

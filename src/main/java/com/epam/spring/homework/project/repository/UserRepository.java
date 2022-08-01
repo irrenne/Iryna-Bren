@@ -1,17 +1,18 @@
 package com.epam.spring.homework.project.repository;
 
+import com.epam.spring.homework.project.model.Role;
 import com.epam.spring.homework.project.model.User;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface UserRepository {
-    User getUser(String login);
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    User createUser(User user);
+    Optional<User> findByLogin(String login);
 
-    User updateUser(String login, User user);
-
-    void deleteUser(String login);
-
-    List<User> getUsers();
+    List<User> findAllByRole(Role role, Pageable pageable);
 }

@@ -1,76 +1,63 @@
 package com.epam.spring.homework.project.controller;
 
+import com.epam.spring.homework.project.api.ReportApi;
 import com.epam.spring.homework.project.dto.ReportDto;
 import com.epam.spring.homework.project.model.Status;
 import com.epam.spring.homework.project.service.ReportService;
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/report")
 @RequiredArgsConstructor
-public class ReportController {
+public class ReportController implements ReportApi {
     private final ReportService reportService;
 
-    @ApiOperation("Create report")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/create-report")
-    public ReportDto createReport(@RequestBody @Valid ReportDto reportDto) {
+    @Override
+    public ReportDto createReport(ReportDto reportDto) {
         return reportService.createReport(reportDto);
     }
 
-    @ApiOperation("Update report")
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/update-report/{id}")
-    public ReportDto updateReport(@PathVariable Long id, @RequestBody @Valid ReportDto reportDto) {
+    @Override
+    public ReportDto updateReport(Long id, ReportDto reportDto) {
         return reportService.updateReport(id, reportDto);
     }
 
-    @ApiOperation("Confirm report")
-    @PatchMapping("/confirm-report/{id}")
-    public ReportDto confirmReport(@PathVariable Long id, @RequestBody @Valid ReportDto reportDto) {
-        if (reportDto.getStatus().equals(Status.SUBMITTED.toString())) {
-            reportDto.setStatus(Status.CONFIRMED.toString());
+    @Override
+    public ReportDto confirmReport(Long id, ReportDto reportDto) {
+        if (reportDto.getStatus().equals(Status.SUBMITTED)) {
+            reportDto.setStatus(Status.CONFIRMED);
+            log.info("report with id = " + id + " confirmed");
         }
         return reportService.updateReportInspector(id, reportDto);
     }
 
-    @ApiOperation("Deny report")
-    @PatchMapping("/deny-report/{id}")
-    public ReportDto denyReport(@PathVariable Long id, @RequestBody @Valid ReportDto reportDto, @RequestParam String comment) {
-        if (reportDto.getStatus().equals(Status.SUBMITTED.toString())) {
-            reportDto.setStatus(Status.NOT_CONFIRMED.toString());
+    @Override
+    public ReportDto denyReport(Long id, ReportDto reportDto, String comment) {
+        if (reportDto.getStatus().equals(Status.SUBMITTED)) {
+            reportDto.setStatus(Status.NOT_CONFIRMED);
             reportDto.setComment(comment);
-            log.info("denied " + reportDto.getFileName() + " comment " + comment);
+            log.info("denied report with id = " + id + " reason " + comment);
         }
         return reportService.updateReportInspector(id, reportDto);
     }
 
-    @ApiOperation("Get reports for user")
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{userId}")
-    public List<ReportDto> getReportsForUser(@PathVariable Long userId) {
-        return reportService.getReportsForUser(userId);
+    @Override
+    public List<ReportDto> getReportsForUser(Long userId, int page, int size) {
+        return reportService.getReportsForUser(userId, page, size);
     }
 
-    @ApiOperation("Get reports")
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/")
+    @Override
     public List<ReportDto> getReports() {
         return reportService.getReports();
     }
 
-    @ApiOperation("Delete report")
-    @DeleteMapping("/delete-report/{id}")
-    public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
+    @Override
+    public ResponseEntity<Void> deleteReport(Long id) {
         reportService.deleteReport(id);
         return ResponseEntity.noContent().build();
     }
