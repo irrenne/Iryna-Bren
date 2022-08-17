@@ -2,7 +2,6 @@ package com.epam.spring.homework.project.controller;
 
 import com.epam.spring.homework.project.api.ReportApi;
 import com.epam.spring.homework.project.dto.ReportDto;
-import com.epam.spring.homework.project.model.Status;
 import com.epam.spring.homework.project.service.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,21 +28,12 @@ public class ReportController implements ReportApi {
 
     @Override
     public ReportDto confirmReport(Long id, ReportDto reportDto) {
-        if (reportDto.getStatus().equals(Status.SUBMITTED)) {
-            reportDto.setStatus(Status.CONFIRMED);
-            log.info("report with id = " + id + " confirmed");
-        }
-        return reportService.updateReportInspector(id, reportDto);
+        return reportService.confirmReport(id, reportDto);
     }
 
     @Override
     public ReportDto denyReport(Long id, ReportDto reportDto, String comment) {
-        if (reportDto.getStatus().equals(Status.SUBMITTED)) {
-            reportDto.setStatus(Status.NOT_CONFIRMED);
-            reportDto.setComment(comment);
-            log.info("denied report with id = " + id + " reason " + comment);
-        }
-        return reportService.updateReportInspector(id, reportDto);
+        return reportService.denyReport(id, reportDto, comment);
     }
 
     @Override

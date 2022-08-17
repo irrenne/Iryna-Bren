@@ -1,8 +1,10 @@
 package com.epam.spring.homework.project.service.impl;
 
 import com.epam.spring.homework.project.dto.ReportDto;
+import com.epam.spring.homework.project.exception.ReportNotFoundException;
 import com.epam.spring.homework.project.mapping.ReportMapper;
 import com.epam.spring.homework.project.model.Report;
+import com.epam.spring.homework.project.model.Status;
 import com.epam.spring.homework.project.repository.ReportRepository;
 import com.epam.spring.homework.project.service.ReportService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,8 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ReportDto getReport(Long id) {
         log.info("getReport by id {}", id);
-        Report report = reportRepository.getById(id);
+        Report report = reportRepository.findById(id).orElseThrow(()
+                -> new ReportNotFoundException("Report is not found"));
         return ReportMapper.INSTANCE.reportToReportDto(report);
     }
 
@@ -39,28 +42,57 @@ public class ReportServiceImpl implements ReportService {
     @Transactional
     @Override
     public ReportDto updateReport(Long id, ReportDto reportDto) {
-        log.info("updateReport with id for user with id {}, {}", id, reportDto.getUser().getId());
-        Report persistedReport = reportRepository.getById(id);
+        Report persistedReport = reportRepository.findById(id).orElseThrow(()
+                -> new ReportNotFoundException("Report is not found"));
         persistedReport = ReportMapper.INSTANCE.populateReportWithDtoForUser(persistedReport, reportDto);
         persistedReport = reportRepository.save(persistedReport);
+        log.info("updateReport with id for user with id {}, {}", id, reportDto.getUser().getId());
         return ReportMapper.INSTANCE.reportToReportDto(persistedReport);
     }
 
     @Transactional
     @Override
-    public ReportDto updateReportInspector(Long id, ReportDto reportDto) {
-        log.info("updateReport with id {} for user with id {}, inspector id = {}",
-                id, reportDto.getUser().getId(), reportDto.getInspector().getId());
-        Report persistedReport = reportRepository.getById(id);
-        persistedReport = ReportMapper.INSTANCE.populateReportWithDtoForInspector(persistedReport, reportDto);
-        persistedReport = reportRepository.save(persistedReport);
+    public ReportDto confirmReport(Long id, ReportDto reportDto) {
+        Report persistedReport = reportRepository.findById(id).orElseThrow(()
+                -> new ReportNotFoundException("Report is not found"));
+        if (reportDto.getStatus().equals(Status.SUBMITTED)) {
+            reportDto.setStatus(Status.CONFIRMED);
+            log.info("report with id = " + id + " confirmed");
+
+            persistedReport = ReportMapper.INSTANCE.populateReportWithDtoForInspector(persistedReport, reportDto);
+            persistedReport = reportRepository.save(persistedReport);
+            log.info("confirmReport with id {} for user with id {}, inspector id = {}",
+                    id, reportDto.getUser().getId(), reportDto.getInspector().getId());
+        }
+
+        return ReportMapper.INSTANCE.reportToReportDto(persistedReport);
+    }
+
+    @Transactional
+    @Override
+    public ReportDto denyReport(Long id, ReportDto reportDto, String comment) {
+        Report persistedReport = reportRepository.findById(id).orElseThrow(()
+                -> new ReportNotFoundException("Report is not found"));
+        if (reportDto.getStatus().equals(Status.SUBMITTED)) {
+            reportDto.setStatus(Status.NOT_CONFIRMED);
+            reportDto.setComment(comment);
+            log.info("denied report with id = " + id + " reason " + comment);
+
+            persistedReport = ReportMapper.INSTANCE.populateReportWithDtoForInspector(persistedReport, reportDto);
+            persistedReport = reportRepository.save(persistedReport);
+            log.info("denyReport with id {} for user with id {}, inspector id = {}",
+                    id, reportDto.getUser().getId(), reportDto.getInspector().getId());
+        }
+
         return ReportMapper.INSTANCE.reportToReportDto(persistedReport);
     }
 
     @Override
     public void deleteReport(Long id) {
         log.info("deleteReport with id {}", id);
-        reportRepository.deleteById(id);
+        Report report = reportRepository.findById(id).orElseThrow(()
+                -> new ReportNotFoundException("Report is not found"));
+        reportRepository.delete(report);
     }
 
     @Transactional(readOnly = true)

@@ -11,7 +11,9 @@ public interface ReportService {
 
     ReportDto updateReport(Long id, ReportDto reportDto);
 
-    ReportDto updateReportInspector(Long id, ReportDto report);
+    ReportDto confirmReport(Long id, ReportDto report);
+
+    ReportDto denyReport(Long id, ReportDto report, String comment);
 
     void deleteReport(Long id);
 

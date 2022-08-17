@@ -1,13 +1,14 @@
 package com.epam.spring.homework.project.dto;
 
 import com.epam.spring.homework.project.model.Status;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class ReportDto {
     private long id;
 
@@ -16,7 +17,7 @@ public class ReportDto {
     private String type;
 
     @NotNull
-    private Date dateOfCreation;
+    private LocalDateTime dateOfCreation;
 
     @NotNull
     private Status status;

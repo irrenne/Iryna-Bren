@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,7 +18,7 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String type;
-    private Date dateOfCreation;
+    private LocalDateTime dateOfCreation;
     private Status status;
     private String comment;
     private String fileName;
