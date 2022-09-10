@@ -32,7 +32,7 @@ public class ReportController {
 
     @PatchMapping("/confirm-report/{id}")
     public ReportDto confirmReport(@PathVariable Long id, @RequestBody ReportDto reportDto) {
-        if (reportDto.getStatus().equals(Status.SUBMITTED.toString())) {
+        if (Status.SUBMITTED.toString().equals(reportDto.getStatus())) {
             reportDto.setStatus(Status.CONFIRMED.toString());
         }
         return reportService.updateReportInspector(id, reportDto);
@@ -40,7 +40,7 @@ public class ReportController {
 
     @PatchMapping("/deny-report/{id}")
     public ReportDto denyReport(@PathVariable Long id, @RequestBody ReportDto reportDto) {
-        if (reportDto.getStatus().equals(Status.SUBMITTED.toString())) {
+        if (Status.SUBMITTED.toString().equals(reportDto.getStatus())) {
             reportDto.setStatus(Status.NOT_CONFIRMED.toString());
         }
         return reportService.updateReportInspector(id, reportDto);

@@ -3,11 +3,12 @@ package com.epam.spring.homework.project.repository.impl;
 import com.epam.spring.homework.project.repository.UserRepository;
 import com.epam.spring.homework.project.model.User;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class UserRepositoryImpl implements UserRepository {
     private final List<User> users = new ArrayList<>();
 
