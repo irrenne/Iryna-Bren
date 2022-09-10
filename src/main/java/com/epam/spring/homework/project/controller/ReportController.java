@@ -36,7 +36,7 @@ public class ReportController {
 
     @ApiOperation("Confirm report")
     @PatchMapping("/confirm-report/{id}")
-    public ReportDto confirmReport(@PathVariable Long id, @RequestBody @Valid ReportDto reportDto) {
+    public ReportDto confirmReport(@PathVariable Long id, @RequestBody ReportDto reportDto) {
         if (Status.SUBMITTED.toString().equals(reportDto.getStatus())) {
             reportDto.setStatus(Status.CONFIRMED.toString());
         }
@@ -45,11 +45,10 @@ public class ReportController {
 
     @ApiOperation("Deny report")
     @PatchMapping("/deny-report/{id}")
-    public ReportDto denyReport(@PathVariable Long id, @RequestBody @Valid ReportDto reportDto, @RequestParam String comment) {
+    public ReportDto denyReport(@PathVariable Long id, @RequestBody ReportDto reportDto) {
         if (Status.SUBMITTED.toString().equals(reportDto.getStatus())) {
             reportDto.setStatus(Status.NOT_CONFIRMED.toString());
-            reportDto.setComment(comment);
-            log.info("denied " + reportDto.getFileName() + " comment " + comment);
+            log.info("denied " + reportDto.getFileName());
         }
         return reportService.updateReportInspector(id, reportDto);
     }
