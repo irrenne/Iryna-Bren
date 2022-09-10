@@ -4,12 +4,13 @@ import com.epam.spring.homework.project.exception.ReportNotFoundException;
 import com.epam.spring.homework.project.repository.ReportRepository;
 import com.epam.spring.homework.project.model.Report;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
 public class ReportRepositoryImpl implements ReportRepository {
     private final List<Report> reports = new ArrayList<>();
 
