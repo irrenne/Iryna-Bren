@@ -1,5 +1,6 @@
 package com.epam.spring.homework.project.repository.impl;
 
+import com.epam.spring.homework.project.exception.ReportNotFoundException;
 import com.epam.spring.homework.project.repository.ReportRepository;
 import com.epam.spring.homework.project.model.Report;
 import org.springframework.stereotype.Component;
@@ -17,7 +18,7 @@ public class ReportRepositoryImpl implements ReportRepository {
     public Report getReport(Long id) {
         return reports.stream().filter(report -> report.getId() == (id))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Report is not found"));
+                .orElseThrow(() -> new ReportNotFoundException("Report is not found"));
     }
 
     @Override
@@ -32,7 +33,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         if (isDeleted) {
             reports.add(report);
         } else {
-            throw new RuntimeException("Report is not found");
+            throw new ReportNotFoundException("Report is not found");
         }
         return report;
     }
